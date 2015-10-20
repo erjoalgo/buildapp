@@ -160,6 +160,8 @@
              (push entry (dispatched-entries plan))))
           (:dynamic-space-size
            (setf (dynamic-space-size plan) (parse-integer value)))
+	  (:control-stack-size
+           (setf (control-stack-size plan) (parse-integer value)))
           (t
            (error 'unknown-argument :flag argument)))))))
 

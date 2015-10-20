@@ -121,6 +121,9 @@ Other flags:"
   --dynamic-space-size MB   Pass a --dynamic-space-size option to SBCL
                               when building; value is megabytes"
 "
+  --control-stack-size MB   Pass a --control-stack-size option to SBCL"
+"
+
   --help                    Show this usage message
   --logfile FILE            Log compilation and load output to FILE"
 #+sbcl
@@ -391,7 +394,9 @@ ARGV. See *USAGE* for details."
     (quit))
   (let* ((dumper (command-line-dumper (rest argv)))
          (*package* (find-package :buildapp))
-         #+sbcl (dynamic-space-size (dynamic-space-size dumper)))
+         #+sbcl (dynamic-space-size (dynamic-space-size dumper))
+         #+sbcl (control-stack-size (control-stack-size dumper))
+	 )
     (with-tempfile (stream ("dumper.lisp" file))
       (write-dumpfile dumper stream)
       (force-output stream)
@@ -406,6 +411,11 @@ ARGV. See *USAGE* for details."
                                       (list "--dynamic-space-size"
                                             (princ-to-string
                                              dynamic-space-size)))
+				    #+sbcl
+                                    (when control-stack-size
+                                      (list "--control-stack-size"
+                                            (princ-to-string
+                                             control-stack-size)))
                                     #+sbcl "--noinform"
                                     #+ccl  "--quiet"
                                     #+sbcl "--disable-debugger"

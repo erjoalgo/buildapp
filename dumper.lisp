@@ -86,7 +86,12 @@
    (dynamic-space-size
     :initarg :dynamic-space-size
     :accessor dynamic-space-size
-    :initform nil)))
+    :initform nil)
+   (control-stack-size
+    :initarg :control-stack-size
+    :accessor control-stack-size
+    :initform nil)
+   ))
 
 (defgeneric needs-asdf-p (dumper)
   (:method (dumper)
